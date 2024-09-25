@@ -18,6 +18,9 @@ const App = () => {
   };
 
   const handleAddNumber = (num) => {
+    if (num === '.' && currentNumber.includes('.')) {
+      return; 
+    }
     setCurrentNumber(prev => `${prev === '0' ? '' : prev}${num}`)
   }
 
@@ -48,7 +51,31 @@ const App = () => {
     }
 
   }
-
+  //Adicionada função de multiplicação
+  const handleMultiNumbers = () => {
+    if (firstNumber === '0') {
+      setFirstNumber(String(currentNumber));
+      setCurrentNumber('0');
+      setOperation('*');
+    }
+    else {
+      const multi = Number(firstNumber) * Number(currentNumber);
+      setCurrentNumber(String(multi));
+      setOperation('');
+    }
+  }
+  //Adicionada função de divisão
+  const handleDivNumbers = () => {
+    if (firstNumber === '0') {
+      setFirstNumber(String(currentNumber));
+      setCurrentNumber('0');
+      setOperation('/');
+    } else {
+      const divid = Number(firstNumber) / Number(currentNumber);
+      setCurrentNumber(String(divid));
+      setOperation('');
+    }
+  }
   const handleEquals = () => {
 
     if(firstNumber !== '0' && operation !== '' && currentNumber !== '0'){
@@ -58,6 +85,14 @@ const App = () => {
             break;
           case '-':
             handleMinusNumbers();
+            break;
+          //Adicionado novo case
+          case '*':
+            handleMultiNumbers();
+            break;
+          //Adicionado novo case
+          case '/':
+            handleDivNumbers();
             break;
           default: 
             break;
@@ -71,10 +106,10 @@ const App = () => {
       <Content>
         <Input value={currentNumber}/>
         <Row>
-          <Button label="x"/>
-          <Button label="/"/>
+          <Button label="x" onClick={handleMultiNumbers}/>
+          <Button label="/" onClick={handleDivNumbers}/>
           <Button label="c" onClick={handleOnClear}/>
-          <Button label="."/>
+          <Button label="." onClick={() => handleAddNumber('.')}/>
         </Row>
         <Row>
           <Button label="7" onClick={() => handleAddNumber('7')}/>
